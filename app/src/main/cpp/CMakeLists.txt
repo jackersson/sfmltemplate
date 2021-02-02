@@ -54,12 +54,15 @@ target_link_libraries( # Specifies the target library.
 
         # Links the target library to the log library
         # included in the NDK.
-
+        log
+        android
+        EGL
+        GLESv1_CM
         sfml-system-d
+        openal
         sfml-window-d
         sfml-graphics-d
         sfml-network-d
         sfml-activity-d
-        sfml-main-d
-        ${log-lib}
+        -Wl,--whole-archive sfml-main-d -Wl,--no-whole-archive
         )

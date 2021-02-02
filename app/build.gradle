@@ -17,12 +17,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++11 -v"
+                cppFlags ""
                 arguments "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared",
-                        "-DSFML_INCLUDE_DIR=${ndkDir}/sources/third_party/sfml/include",
-                        "-DSFML_LIBRARY_DIR=${ndkDir}/sources/third_party/sfml/lib/",
-                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/third_party/sfml/extlibs/lib/"
+                        "-DSFML_INCLUDE_DIR=${ndkDir}/sources/sfml/include",
+                        "-DSFML_LIBRARY_DIR=${ndkDir}/sources/sfml/lib/",
+                        "-DSFML_EXT_LIBRARY_DIR=${ndkDir}/sources/sfml/extlibs/lib/"
                 abiFilters "armeabi-v7a"
             }
         }
@@ -40,6 +40,17 @@ android {
             version "3.10.2"
         }
     }
+    sourceSets {
+        main {
+            // let gradle pack the shared library into apk
+            jniLibs.srcDirs = [
+                    "${ndkDir}/sources/sfml/lib",
+                    "${ndkDir}/sources/sfml/extlibs/lib/"
+                    // uncomment if you want to use Admob
+                    // ,"${ndkDir}/sources/firebase_cpp_sdk/libs/android/"
+            ]
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -47,7 +58,7 @@ android {
 }
 
 dependencies {
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
